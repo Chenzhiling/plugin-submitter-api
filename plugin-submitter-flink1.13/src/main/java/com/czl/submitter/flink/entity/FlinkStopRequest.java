@@ -1,8 +1,8 @@
-package com.czl.submiiter.flink.entity;
+package com.czl.submitter.flink.entity;
 
 import com.czl.submitter.core.entity.StopRequest;
 import com.czl.submitter.core.enums.ExecutionMode;
-import com.czl.submitter.flink.entity.FlinkInfo;
+import com.czl.submitter.flink.FlinkInfo;
 
 import java.util.Map;
 

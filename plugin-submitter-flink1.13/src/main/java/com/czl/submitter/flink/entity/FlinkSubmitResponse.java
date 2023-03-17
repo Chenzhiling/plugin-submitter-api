@@ -1,4 +1,4 @@
-package com.czl.submiiter.flink.entity;
+package com.czl.submitter.flink.entity;
 
 import com.czl.submitter.core.entity.SubmitResponse;
 

@@ -1,8 +1,8 @@
 package com.czl.submitter.flink.service.Impl
 
-import com.czl.submiiter.flink.entity.{FlinkStopRequest, FlinkSubmitRequest, FlinkSubmitResponse}
+import com.czl.submitter.flink.entity.{FlinkStopRequest, FlinkSubmitRequest, FlinkSubmitResponse}
 import com.czl.submitter.core.entity.{QueryRequest, QueryResponse, StopResponse}
-import com.czl.submitter.flink.entity.FlinkInfo
+import com.czl.submitter.flink.FlinkInfo
 import com.czl.submitter.flink.service.FlinkYarnSubmitTrait
 import org.apache.flink.api.common.JobID
 import org.apache.flink.client.deployment.{ClusterClientFactory, ClusterSpecification, DefaultClusterClientServiceLoader}

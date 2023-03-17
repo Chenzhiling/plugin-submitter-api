@@ -1,6 +1,6 @@
 package com.czl.submitter.flink.service.Impl
 
-import com.czl.submiiter.flink.entity.{FlinkStopRequest, FlinkSubmitRequest, FlinkSubmitResponse}
+import com.czl.submitter.flink.entity.{FlinkStopRequest, FlinkSubmitRequest, FlinkSubmitResponse}
 import com.czl.submitter.core.consts.PluginConst
 import com.czl.submitter.core.entity.{QueryRequest, QueryResponse, StopResponse}
 import com.czl.submitter.flink.service.FlinkSubmitTrait

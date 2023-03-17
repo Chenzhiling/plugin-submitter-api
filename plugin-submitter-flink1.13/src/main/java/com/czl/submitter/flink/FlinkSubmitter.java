@@ -1,7 +1,7 @@
-package com.czl.submiiter.flink;
+package com.czl.submitter.flink;
 
-import com.czl.submiiter.flink.entity.FlinkStopRequest;
-import com.czl.submiiter.flink.entity.FlinkSubmitRequest;
+import com.czl.submitter.flink.entity.FlinkStopRequest;
+import com.czl.submitter.flink.entity.FlinkSubmitRequest;
 import com.czl.submitter.core.entity.*;
 import com.czl.submitter.core.enums.ExecutionMode;
 import com.czl.submitter.core.exception.SubmitterException;

@@ -1,4 +1,4 @@
-package com.czl.submitter.flink.entity
+package com.czl.submitter.flink
 
 import java.io.File
 import java.net.{URL => NetURL}

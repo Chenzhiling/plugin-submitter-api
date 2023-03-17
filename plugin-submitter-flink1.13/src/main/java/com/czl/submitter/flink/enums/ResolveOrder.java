@@ -1,4 +1,4 @@
-package com.czl.submiiter.flink.enums;
+package com.czl.submitter.flink.enums;
 
 /**
  * Author: CHEN ZHI LING

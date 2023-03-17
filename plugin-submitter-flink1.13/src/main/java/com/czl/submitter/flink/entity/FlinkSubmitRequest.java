@@ -1,9 +1,9 @@
-package com.czl.submiiter.flink.entity;
+package com.czl.submitter.flink.entity;
 
-import com.czl.submiiter.flink.enums.ResolveOrder;
+import com.czl.submitter.flink.enums.ResolveOrder;
 import com.czl.submitter.core.entity.SubmitRequest;
 import com.czl.submitter.core.enums.ExecutionMode;
-import com.czl.submitter.flink.entity.FlinkInfo;
+import com.czl.submitter.flink.FlinkInfo;
 import org.apache.flink.runtime.jobgraph.SavepointConfigOptions;
 import org.apache.flink.runtime.jobgraph.SavepointRestoreSettings;
 

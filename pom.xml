@@ -11,6 +11,8 @@
     <modules>
         <module>plugin-submitter-core</module>
         <module>plugin-submitter-flink1.13</module>
+        <module>plugin-submitter-spark3.1.2</module>
+        <module>plugin-spark-template</module>
     </modules>
 
     <properties>
@@ -18,6 +20,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <spark.version>3.1.2</spark.version>
         <flink.version>1.13.0</flink.version>
+        <hadoop.version>3.2.2</hadoop.version>
         <scala.version>2.12.14</scala.version>
         <scala.binary.version>2.12</scala.binary.version>
         <log4j.version>1.7.30</log4j.version>
@@ -26,7 +29,16 @@
     </properties>
 
     <dependencyManagement>
-
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-yarn-common</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-yarn-client</artifactId>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
 
     <dependencies>
@@ -53,5 +65,44 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>maven-scala-plugin</artifactId>
+                    <version>2.15.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>compile-scala</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scalaVersion>2.12.14</scalaVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
