@@ -13,6 +13,7 @@
         <module>plugin-submitter-flink1.13</module>
         <module>plugin-submitter-spark3.1.2</module>
         <module>plugin-spark-template</module>
+        <module>plugin-submitter-test</module>
     </modules>
 
     <properties>
