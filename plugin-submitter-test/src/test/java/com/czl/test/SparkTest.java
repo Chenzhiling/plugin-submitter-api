@@ -28,7 +28,7 @@ public class SparkTest {
 
     ISubmitter submitter = SubmitterFactory.getSubmitter("com.czl.submitter.spark.SparkSubmitter");
     SparkInfo sparkInfo = new SparkInfo("/usr/local/spark");
-    String jarPath = "plugin-spark-template-1.0.jar";
+    String jarPath = "../jar/plugin-spark-template-1.0.jar";
     String mainClass= "com.czl.template.SparkStreamTest";
     Map<String,String> executorEnv = new HashMap<>();
     Map<String,Object> extraParameter = new HashMap<>();

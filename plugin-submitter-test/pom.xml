@@ -22,6 +22,12 @@
             <artifactId>plugin-submitter-spark3.1.2</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.czl</groupId>
+            <artifactId>plugin-submitter-flink1.13</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
