@@ -1,6 +1,6 @@
 package com.czl.submitter.presto
 
-import com.czl.submitter.presto.entity.{SqlQueryRequest, SqlQueryResponse}
+import com.czl.submitter.presto.entity.{SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
 import com.czl.submitter.presto.service.impl.StandaloneSubmit
 
 /**
@@ -13,5 +13,9 @@ object PrestoSubmitter {
 
   def sqlQuery(sqlQueryRequest: SqlQueryRequest): SqlQueryResponse = {
     StandaloneSubmit.sqlQuery(sqlQueryRequest)
+  }
+
+  def statusQuery(statusQuery: StatusQueryRequest): StatusQueryResponse = {
+    StandaloneSubmit.statusQuery(statusQuery)
   }
 }

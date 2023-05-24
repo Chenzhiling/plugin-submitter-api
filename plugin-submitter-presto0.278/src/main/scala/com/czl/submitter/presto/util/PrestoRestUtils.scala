@@ -1,6 +1,6 @@
 package com.czl.submitter.presto.util
 
-import com.czl.submitter.presto.entity.SqlQueryResponse
+import com.czl.submitter.presto.entity.{SqlQueryResponse, StatusQueryResponse}
 import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.hc.client5.http.fluent.Request
@@ -65,6 +65,30 @@ object PrestoRestUtils {
       }
       subRequest(subResponse, data)
   }
+
+
+  def statusQuery(url: String): StatusQueryResponse = {
+    val result: String = Request.get(url)
+      .connectTimeout(Timeout.ofSeconds(10))
+      .responseTimeout(Timeout.ofSeconds(10))
+      .addHeader("content-type", "application/json")
+      .execute()
+      .returnContent()
+      .asString(StandardCharsets.UTF_8)
+    val response: StatusQueryResponse = Try(parse(result)) match {
+      case Success(ok) =>
+        StatusQueryResponse(
+          (ok \ "state").extractOpt[String].orNull,
+          (ok \ "query").extractOpt[String].orNull,
+          (ok \ "queryType").extractOpt[String].orNull,
+          (ok \ "session").extractOpt[Map[String, AnyRef]].orNull.get("user").mkString,
+          (ok \ "queryStats").extractOpt[Map[String, AnyRef]].orNull.get("elapsedTime").mkString
+        )
+      case Failure(_) => null
+    }
+    response
+  }
+
 
   private def getResponse(result: String): SqlTaskResponse = {
     val response: SqlTaskResponse = Try(parse(result)) match {
