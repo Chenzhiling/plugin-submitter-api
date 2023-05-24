@@ -5,12 +5,14 @@
 
 ## 1. introduction
 
-This project can help you to submit, query, kill flink or spark task in java
-
+- allows you to submit, query, kill flink task by java on different deploy mode
+- allows you to submit, query, kill spark task by java on different deploy mode
+- allows you to submit Presto queries and view results by java
 ## 2. Support version
 
 - Flink 1.13
 - Spark 3.1.2
+- presto 0.278
 
 ## 3. Support mode
 
@@ -19,3 +21,4 @@ This project can help you to submit, query, kill flink or spark task in java
 - Flink yarn-per-job
 - Spark standalone
 - Spark yarn
+- presto
