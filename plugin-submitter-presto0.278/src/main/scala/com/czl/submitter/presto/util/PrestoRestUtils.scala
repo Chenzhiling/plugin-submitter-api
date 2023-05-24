@@ -28,6 +28,7 @@ object PrestoRestUtils {
 
 
   def sqlQueryTask(url: String, user: String, sql: String): SqlTaskResponse = {
+
     val result: String = Request.post(url)
       .connectTimeout(Timeout.ofSeconds(10))
       .responseTimeout(Timeout.ofSeconds(10))
@@ -43,19 +44,24 @@ object PrestoRestUtils {
 
   @tailrec
   def subRequest(prestoSubmitResponse: SqlTaskResponse, data: ListBuffer[List[AnyRef]]): SqlQueryResponse = {
+
       val subResult: String = Request.get(prestoSubmitResponse.nextUrl)
         .connectTimeout(Timeout.ofSeconds(10))
         .responseTimeout(Timeout.ofSeconds(10))
         .execute()
         .returnContent()
         .asString(StandardCharsets.UTF_8)
+
       val subResponse: SqlTaskResponse = getResponse(subResult)
+
       if (CollectionUtils.isNotEmpty(subResponse.data.asJava)) {
         val subData: List[List[AnyRef]] = subResponse.data
         subData.foreach((x: List[AnyRef]) => data.append(x))
       }
+
       if ("FINISHED".equals(subResponse.state) && StringUtils.isEmpty(subResponse.nextUrl)) {
-         return SqlQueryResponse(data.toList.asJava)
+        val schema: List[String] = getSchema(subResult)
+        return SqlQueryResponse(schema.asJava, data.toList.asJava)
       }
       subRequest(subResponse, data)
   }
@@ -72,6 +78,19 @@ object PrestoRestUtils {
     }
     response
   }
+
+
+  private def getSchema(result: String) : List[String] = {
+    val lists = new ListBuffer[String]
+    val schema: List[String] = Try(parse(result)) match {
+      case Success(ok) =>
+        val columns: List[Map[String, AnyRef]] = (ok \ "columns").extractOpt[List[Map[String, AnyRef]]].orNull
+        columns.foreach((x: Map[String, AnyRef]) => lists.append(x.get("name").mkString))
+        lists.toList
+      case Failure(_) => null
+    }
+    schema
+  }
 }
 
 
@@ -79,3 +98,5 @@ private[presto] case class SqlTaskResponse(nextUrl: String,
                                            state: String,
                                            data: List[List[AnyRef]]) {
 }
+
+private[presto] case class SqlSchema(schema: List[String])
