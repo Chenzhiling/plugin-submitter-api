@@ -15,6 +15,7 @@
         <module>plugin-spark-template</module>
         <module>plugin-submitter-test</module>
         <module>plugin-flink-template</module>
+        <module>plugin-submitter-presto0.278</module>
     </modules>
 
     <properties>
