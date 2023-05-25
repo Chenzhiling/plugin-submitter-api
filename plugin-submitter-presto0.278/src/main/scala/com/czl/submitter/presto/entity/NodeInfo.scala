@@ -23,3 +23,10 @@ case class ClusterInfo(runningQueries: Long,
                        totalInputBytes: Long,
                        totalCpuTimeSecs: Long,
                        adjustedQueueSize: Long)
+
+
+case class KillRequest(master: String,
+                       taskId: String)
+
+
+case class KillResponse(result: Boolean)

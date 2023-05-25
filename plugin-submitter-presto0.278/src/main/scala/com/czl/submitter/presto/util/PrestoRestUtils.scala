@@ -1,6 +1,6 @@
 package com.czl.submitter.presto.util
 
-import com.czl.submitter.presto.entity.{ClusterInfo, NodeInfo, SqlQueryResponse, StatusQueryResponse}
+import com.czl.submitter.presto.entity.{ClusterInfo, KillResponse, NodeInfo, SqlQueryResponse, StatusQueryResponse}
 import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.hc.client5.http.fluent.Request
@@ -143,6 +143,22 @@ object PrestoRestUtils {
       case Failure(_) => null
     }
     clusterInfo
+  }
+
+
+  def kill(url: String): KillResponse = {
+    try {
+      val str: String = Request.put(url)
+        .connectTimeout(Timeout.ofSeconds(10))
+        .responseTimeout(Timeout.ofSeconds(10))
+        .addHeader("content-type", "application/json")
+        .execute()
+        .returnContent()
+        .asString(StandardCharsets.UTF_8)
+      KillResponse(true)
+    } catch {
+      case _: Exception => KillResponse(false)
+    }
   }
 
 

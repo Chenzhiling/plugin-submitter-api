@@ -1,6 +1,6 @@
 package com.czl.submitter.presto
 
-import com.czl.submitter.presto.entity.{ClusterInfo, NodeInfo, SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
+import com.czl.submitter.presto.entity.{ClusterInfo, KillRequest, KillResponse, NodeInfo, SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
 import com.czl.submitter.presto.service.impl.StandaloneSubmit
 
 import scala.collection.JavaConverters._
@@ -34,5 +34,10 @@ object PrestoSubmitter {
 
   def clusterInfoQuery(master: String): ClusterInfo = {
     StandaloneSubmit.clusterInfoQuery(master)
+  }
+
+
+  def kill(killRequest: KillRequest): KillResponse = {
+    StandaloneSubmit.kill(killRequest)
   }
 }

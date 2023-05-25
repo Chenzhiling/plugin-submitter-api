@@ -1,6 +1,6 @@
 package com.czl.submitter.presto.service.impl
 
-import com.czl.submitter.presto.entity.{ClusterInfo, NodeInfo, SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
+import com.czl.submitter.presto.entity.{ClusterInfo, KillRequest, KillResponse, NodeInfo, SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
 import com.czl.submitter.presto.service.PrestoTrait
 import com.czl.submitter.presto.util.{PrestoRestUtils, SqlTaskResponse}
 
@@ -43,5 +43,10 @@ object StandaloneSubmit extends PrestoTrait {
   override def clusterInfoQuery(master: String): ClusterInfo = {
     val url = s"$master/v1/cluster/"
     PrestoRestUtils.clusterInfoQuery(url)
+  }
+
+  override def kill(killRequest: KillRequest): KillResponse = {
+    val url = s"${killRequest.master}/v1/query/${killRequest.taskId}/killed"
+    PrestoRestUtils.kill(url)
   }
 }

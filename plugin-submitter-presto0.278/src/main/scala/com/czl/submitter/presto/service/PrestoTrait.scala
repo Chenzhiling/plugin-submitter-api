@@ -1,6 +1,6 @@
 package com.czl.submitter.presto.service
 
-import com.czl.submitter.presto.entity.{ClusterInfo, NodeInfo, SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
+import com.czl.submitter.presto.entity.{ClusterInfo, KillRequest, KillResponse, NodeInfo, SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
 
 /**
  * Author: CHEN ZHI LING
@@ -23,4 +23,7 @@ trait PrestoTrait {
 
 
   def clusterInfoQuery(master: String): ClusterInfo
+
+
+  def kill(killRequest: KillRequest): KillResponse
 }
