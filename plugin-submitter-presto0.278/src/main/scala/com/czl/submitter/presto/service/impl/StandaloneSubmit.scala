@@ -1,6 +1,6 @@
 package com.czl.submitter.presto.service.impl
 
-import com.czl.submitter.presto.entity.{SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
+import com.czl.submitter.presto.entity.{ClusterInfo, NodeInfo, SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
 import com.czl.submitter.presto.service.PrestoTrait
 import com.czl.submitter.presto.util.{PrestoRestUtils, SqlTaskResponse}
 
@@ -33,5 +33,15 @@ object StandaloneSubmit extends PrestoTrait {
   override def statusQuery(master: String): List[StatusQueryResponse] = {
     val url = s"$master/v1/query/"
     PrestoRestUtils.statusQuery(url)
+  }
+
+  override def nodeInfoQuery(master: String): NodeInfo = {
+    val url = s"$master/v1/info/"
+    PrestoRestUtils.nodeInfoQuery(url)
+  }
+
+  override def clusterInfoQuery(master: String): ClusterInfo = {
+    val url = s"$master/v1/cluster/"
+    PrestoRestUtils.clusterInfoQuery(url)
   }
 }

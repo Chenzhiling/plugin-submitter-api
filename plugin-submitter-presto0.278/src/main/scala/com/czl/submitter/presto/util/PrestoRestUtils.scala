@@ -1,6 +1,6 @@
 package com.czl.submitter.presto.util
 
-import com.czl.submitter.presto.entity.{SqlQueryResponse, StatusQueryResponse}
+import com.czl.submitter.presto.entity.{ClusterInfo, NodeInfo, SqlQueryResponse, StatusQueryResponse}
 import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 import org.apache.hc.client5.http.fluent.Request
@@ -85,18 +85,6 @@ object PrestoRestUtils {
   }
 
 
-  private def buildQueryPost(url: String): String = {
-    val result: String = Request.get(url)
-      .connectTimeout(Timeout.ofSeconds(10))
-      .responseTimeout(Timeout.ofSeconds(10))
-      .addHeader("content-type", "application/json")
-      .execute()
-      .returnContent()
-      .asString(StandardCharsets.UTF_8)
-    result
-  }
-
-
   def statusQuery(url: String): List[StatusQueryResponse] = {
     val result: String = buildQueryPost(url)
     val tasks: List[Map[String, AnyRef]] = Try(parse(result)) match {
@@ -115,6 +103,58 @@ object PrestoRestUtils {
         task.get("queryStats").orNull.asInstanceOf[Map[String, AnyRef]].get("elapsedTime").mkString))
     })
     list.toList
+  }
+
+
+  def nodeInfoQuery(url: String): NodeInfo = {
+    val result: String = buildQueryPost(url)
+    val nodeInfo: NodeInfo = Try(parse(result)) match {
+      case Success(ok) =>
+      NodeInfo(
+        (ok \ "nodeVersion").extractOpt[Map[String, AnyRef]].orNull.get("version").mkString,
+        (ok \ "environment").extractOpt[String].orNull,
+        (ok \ "coordinator").extractOpt[Boolean].get,
+        (ok \ "starting").extractOpt[Boolean].get,
+        (ok \ "uptime").extractOpt[String].orNull,
+      )
+      case Failure(_) => null
+    }
+    nodeInfo
+  }
+
+
+  def clusterInfoQuery(url: String): ClusterInfo = {
+    val result: String = buildQueryPost(url)
+    val clusterInfo: ClusterInfo = Try(parse(result)) match {
+      case Success(ok) =>
+        ClusterInfo(
+          (ok \ "runningQueries").extractOpt[Long].get,
+          (ok \ "blockedQueries").extractOpt[Long].get,
+          (ok \ "queuedQueries").extractOpt[Long].get,
+          (ok \ "activeWorkers").extractOpt[Long].get,
+          (ok \ "runningDrivers").extractOpt[Long].get,
+          (ok \ "runningTasks").extractOpt[Long].get,
+          (ok \ "reservedMemory").extractOpt[Double].get,
+          (ok \ "totalInputRows").extractOpt[Long].get,
+          (ok \ "totalInputBytes").extractOpt[Long].get,
+          (ok \ "totalCpuTimeSecs").extractOpt[Long].get,
+          (ok \ "adjustedQueueSize").extractOpt[Long].get,
+        )
+      case Failure(_) => null
+    }
+    clusterInfo
+  }
+
+
+  private def buildQueryPost(url: String): String = {
+    val result: String = Request.get(url)
+      .connectTimeout(Timeout.ofSeconds(10))
+      .responseTimeout(Timeout.ofSeconds(10))
+      .addHeader("content-type", "application/json")
+      .execute()
+      .returnContent()
+      .asString(StandardCharsets.UTF_8)
+    result
   }
 
 
