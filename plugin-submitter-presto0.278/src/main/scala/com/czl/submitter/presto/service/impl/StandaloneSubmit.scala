@@ -23,8 +23,15 @@ object StandaloneSubmit extends PrestoTrait {
     PrestoRestUtils.subRequest(response, new ListBuffer[List[AnyRef]])
   }
 
-  override def statusQuery(statusQuery: StatusQueryRequest): StatusQueryResponse = {
+
+  override def statusQueryById(statusQuery: StatusQueryRequest): StatusQueryResponse = {
     val url = s"${statusQuery.master}/v1/query/${statusQuery.taskId}"
+    PrestoRestUtils.statusQueryById(url, statusQuery.taskId)
+  }
+
+
+  override def statusQuery(master: String): List[StatusQueryResponse] = {
+    val url = s"$master/v1/query/"
     PrestoRestUtils.statusQuery(url)
   }
 }

@@ -10,8 +10,8 @@ import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods._
 
 import java.nio.charset.StandardCharsets
-import scala.collection.JavaConverters._
 import scala.annotation.tailrec
+import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
@@ -67,17 +67,12 @@ object PrestoRestUtils {
   }
 
 
-  def statusQuery(url: String): StatusQueryResponse = {
-    val result: String = Request.get(url)
-      .connectTimeout(Timeout.ofSeconds(10))
-      .responseTimeout(Timeout.ofSeconds(10))
-      .addHeader("content-type", "application/json")
-      .execute()
-      .returnContent()
-      .asString(StandardCharsets.UTF_8)
+  def statusQueryById(url: String, taskId: String): StatusQueryResponse = {
+    val result: String = buildQueryPost(url)
     val response: StatusQueryResponse = Try(parse(result)) match {
       case Success(ok) =>
         StatusQueryResponse(
+          taskId,
           (ok \ "state").extractOpt[String].orNull,
           (ok \ "query").extractOpt[String].orNull,
           (ok \ "queryType").extractOpt[String].orNull,
@@ -87,6 +82,39 @@ object PrestoRestUtils {
       case Failure(_) => null
     }
     response
+  }
+
+
+  private def buildQueryPost(url: String): String = {
+    val result: String = Request.get(url)
+      .connectTimeout(Timeout.ofSeconds(10))
+      .responseTimeout(Timeout.ofSeconds(10))
+      .addHeader("content-type", "application/json")
+      .execute()
+      .returnContent()
+      .asString(StandardCharsets.UTF_8)
+    result
+  }
+
+
+  def statusQuery(url: String): List[StatusQueryResponse] = {
+    val result: String = buildQueryPost(url)
+    val tasks: List[Map[String, AnyRef]] = Try(parse(result)) match {
+      case Success(ok) =>
+        ok.extractOpt[List[Map[String, AnyRef]]].orNull
+      case Failure(_) => null
+    }
+    val list = new ListBuffer[StatusQueryResponse]
+    tasks.foreach((task: Map[String, AnyRef]) => {
+      list.append(StatusQueryResponse(
+        task.get("queryId").mkString,
+        task.get("state").mkString,
+        task.get("query").mkString,
+        task.get("queryType").mkString,
+        task.get("session").orNull.asInstanceOf[Map[String, AnyRef]].get("user").mkString,
+        task.get("queryStats").orNull.asInstanceOf[Map[String, AnyRef]].get("elapsedTime").mkString))
+    })
+    list.toList
   }
 
 

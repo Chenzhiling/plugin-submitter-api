@@ -5,7 +5,8 @@ package com.czl.submitter.presto.entity
  * Date: 2023/5/24
  * Description:
  */
-case class StatusQueryResponse(state: String,
+case class StatusQueryResponse(taskId: String,
+                               state: String,
                                query: String,
                                queryType: String,
                                user: String,

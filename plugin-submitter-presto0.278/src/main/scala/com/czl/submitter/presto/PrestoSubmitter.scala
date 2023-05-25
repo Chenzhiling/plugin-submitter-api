@@ -2,7 +2,7 @@ package com.czl.submitter.presto
 
 import com.czl.submitter.presto.entity.{SqlQueryRequest, SqlQueryResponse, StatusQueryRequest, StatusQueryResponse}
 import com.czl.submitter.presto.service.impl.StandaloneSubmit
-
+import scala.collection.JavaConverters._
 /**
  * Author: CHEN ZHI LING
  * Date: 2023/5/23
@@ -15,7 +15,11 @@ object PrestoSubmitter {
     StandaloneSubmit.sqlQuery(sqlQueryRequest)
   }
 
-  def statusQuery(statusQuery: StatusQueryRequest): StatusQueryResponse = {
-    StandaloneSubmit.statusQuery(statusQuery)
+  def statusQueryById(statusQuery: StatusQueryRequest): StatusQueryResponse = {
+    StandaloneSubmit.statusQueryById(statusQuery)
+  }
+
+  def statusQuery(master: String): java.util.List[StatusQueryResponse] = {
+    StandaloneSubmit.statusQuery(master).asJava
   }
 }

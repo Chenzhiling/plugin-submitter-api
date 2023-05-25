@@ -13,5 +13,8 @@ trait PrestoTrait {
   def sqlQuery(sqlQueryRequest: SqlQueryRequest): SqlQueryResponse
 
 
-  def statusQuery(statusQuery: StatusQueryRequest): StatusQueryResponse
+  def statusQueryById(statusQuery: StatusQueryRequest): StatusQueryResponse
+
+
+  def statusQuery(master: String): List[StatusQueryResponse]
 }
